@@ -1,0 +1,83 @@
+--[[ 
+Quantum Compatibility Check 
+
+This script verifies whether Quantum will function correctly in your debugging or sandboxing tool. 
+To view the results, open the Developer Console, where the output will be displayed.
+]]
+
+
+local Print = secureprint or print
+local Warn = securewarn or warn
+local issupported = true
+
+Print("Quantum compatibility check!")
+
+-- loadstring
+pcall(function()
+    loadstring("shared.LOADSTRING = true")()
+end)
+if shared.LOADSTRING ~= true then
+    Warn("❌ loadstring() is not supported!")
+    issupported = false
+else
+    Print("✅ loadstring() is supported!")
+end
+shared.LOADSTRING = nil
+
+-- getgenv (MADE BY UNC)
+getgenv().__TEST_GLOBAL = true
+if __TEST_GLOBAL ~= true then
+    Warn("❌ getgenv() is not supported!")
+    issupported = false
+end
+Print("✅ getgenv() is supported!")
+getgenv().__TEST_GLOBAL = nil
+
+-- require
+local p = game:GetService("Players").LocalPlayer.PlayerScripts:FindFirstChild("PlayerModule")
+local s, r = p and p:IsA("ModuleScript") and pcall(require, p)
+Print(s and "✅ require is supported!" or "❌ require is not supported!")
+
+-- getupvalue (MADE BY UNC)
+local upvalue = function() end
+local function test()
+    print(upvalue)
+end
+if debug.getupvalue(test, 1) ~= upvalue then
+    Warn("❌ debug.getupvalue() is not supported!")
+    issupported = false
+else
+    Print("✅ debug.getupvalue() is supported!")
+end
+
+
+-- writefile (MADE BY UNC)
+local success = pcall(function()
+    writefile("test_writefile.txt", "success")
+end)
+
+if not success then
+    Warn("❌ writefile() is not supported!")
+    issupported = false
+else
+    Print("✅ writefile() is supported!")
+end
+
+local success2, content = pcall(readfile, "test_writefile.txt")
+
+if not success2 or content ~= "success" then
+    Warn("❌ readfile() is not supported!")
+    issupported = false
+else
+    Print("✅ readfile() is supported!")
+end
+
+if issupported then
+    Print("-----------------------")
+    Print("Quantum is supported!")
+    Print("-----------------------")
+else
+    Warn("-----------------------")
+    Warn("Quantum is not supported!")
+    Warn("-----------------------")
+end
