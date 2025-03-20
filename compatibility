@@ -1,7 +1,7 @@
 --[[ 
 Quantum Compatibility Check 
 
-This script verifies whether Quantum will function correctly in your debugging or sandboxing tool. 
+This script verifies whether Quantum will function correctly in your debugging/sandboxing tool. 
 To view the results, open the Developer Console, where the output will be displayed.
 ]]
 
