@@ -74,10 +74,10 @@ end
 
 if issupported then
     Print("-----------------------")
-    Print("Quantum is supported!")
+    Print("Quantum is supported! ->", identifyexecutor())
     Print("-----------------------")
 else
     Warn("-----------------------")
-    Warn("Quantum is not supported!")
+    Warn("Quantum is not supported! ->", identifyexecutor())
     Warn("-----------------------")
 end
