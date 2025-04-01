@@ -69,6 +69,8 @@ else
     Print("✅ readfile() is supported!")
 end
 
+if delfile then delfile("test_writefile.txt") end
+
 -- cache.invalidate / cache.iscached
 local dummyinstance = Instance.new("Part")
 
