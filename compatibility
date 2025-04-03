@@ -32,7 +32,7 @@ getgenv().d = nil
 -- require
 local p = game:GetService("Players").LocalPlayer.PlayerScripts:FindFirstChild("PlayerModule")
 local s, r = p and p:IsA("ModuleScript") and pcall(require, p)
-Print(s and "✅ require is supported!" or "❌ require is not supported!")
+Print(s and "✅ require() is supported!" or "❌ require() is not supported!")
 if not s then issupported = false end
 
 -- getupvalue (CREDIT: UNC TEST)
