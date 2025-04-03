@@ -13,26 +13,26 @@ Print("🔍 Quantum compatibility check starting...")
 
 -- loadstring
 if loadstring(game:HttpGet("https://pastebin.com/raw/8dStgqFA"))() ~= os.time() then
-    Warn("❌ loadstring() is not supported!")
+    Warn("❌ loadstring not supported!")
     issupported = false
 else
-    Print("✅ loadstring() is supported!")
+    Print("✅ loadstring supported!")
 end
 
 -- getgenv 
 getgenv().d = math.random
 if getgenv().d ~= math.random then
-    Warn("❌ getgenv() is not supported!")
+    Warn("❌ getgenv not supported!")
     issupported = false
 else
-    Print("✅ getgenv() is supported!")
+    Print("✅ getgenv supported!")
 end
 getgenv().d = nil
 
 -- require
 local p = game:GetService("Players").LocalPlayer.PlayerScripts:FindFirstChild("PlayerModule")
 local s, r = p and p:IsA("ModuleScript") and pcall(require, p)
-Print(s and "✅ require() is supported!" or "❌ require() is not supported!")
+Print(s and "✅ require supported!" or "❌ require not supported!")
 if not s then issupported = false end
 
 -- getupvalue (CREDIT: UNC TEST)
@@ -41,10 +41,10 @@ local function test()
     print(upvalue)
 end
 if debug.getupvalue(test, 1) ~= upvalue then
-    Warn("❌ debug.getupvalue() is not supported!")
+    Warn("❌ debug.getupvalue not supported!")
     issupported = false
 else
-    Print("✅ debug.getupvalue() is supported!")
+    Print("✅ debug.getupvalue supported!")
 end
 
 -- writefile (CREDIT: UNC TEST)
@@ -53,29 +53,29 @@ local success = pcall(function()
 end)
 
 if not success then
-    Warn("❌ writefile() is not supported!")
+    Warn("❌ writefile not supported!")
     issupported = false
 else
-    Print("✅ writefile() is supported!")
+    Print("✅ writefile supported!")
 end
 
 -- readfile (CREDIT: UNC TEST)
 local success2, content = pcall(readfile, "test_writefile.txt")
 
 if not success2 or content ~= "success" then
-    Warn("❌ readfile() is not supported!")
+    Warn("❌ readfile not supported!")
     issupported = false
 else
-    Print("✅ readfile() is supported!")
+    Print("✅ readfile supported!")
 end
 
 -- isfile
 local success2, content = pcall(isfile, "test_writefile.txt")
 if not success2 or content == false then
-    Warn("❌ isfile() is not supported!")
+    Warn("❌ isfile not supported!")
     issupported = false
 else
-    Print("✅ isfile() is supported!")
+    Print("✅ isfile supported!")
 end
 
 if delfile then delfile("test_writefile.txt") end
@@ -88,28 +88,28 @@ local ok1, result1 = pcall(function()
     return cache.iscached(dummyinstance)
 end)
 if not ok1 then
-    Warn("❌ cache.iscached() is not supported!")
+    Warn("❌ cache.iscached not supported!")
     cachesupported = false
     issupported = false
 else
-    Print("✅ cache.iscached() is supported!")
+    Print("✅ cache.iscached supported!")
 end
 
 local ok2 = pcall(function()
     cache.invalidate(dummyinstance)
 end)
 if not ok2 then
-    Warn("❌ cache.invalidate() is not supported!")
+    Warn("❌ cache.invalidate not supported!")
     cachesupported = false
     issupported = false
 elseif cachesupported then
-    Print("✅ cache.invalidate() is supported!")
+    Print("✅ cache.invalidate supported!")
 end
 
 dummyinstance:Destroy();dummyinstance = nil
 
 -- setclipboard
-if not setclipboard then Warn("❌ setclipboard() is not supported!") issupported = false else Print("✅ setclipboard() is supported!") end
+if not setclipboard then Warn("❌ setclipboard not supported!") issupported = false else Print("✅ setclipboard supported!") end
 
 -- Final Result
 if issupported then
