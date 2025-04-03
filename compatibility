@@ -69,6 +69,15 @@ else
     Print("✅ readfile() is supported!")
 end
 
+-- isfile
+local success2, content = pcall(isfile, "test_writefile.txt")
+if not success2 or content == false then
+    Warn("❌ isfile() is not supported!")
+    issupported = false
+else
+    Print("✅ isfile() is supported!")
+end
+
 if delfile then delfile("test_writefile.txt") end
 
 -- cache.invalidate / cache.iscached
