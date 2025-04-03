@@ -19,15 +19,15 @@ else
     Print("✅ loadstring() is supported!")
 end
 
--- getgenv
-getgenv().__TEST_GLOBAL = true
-if __TEST_GLOBAL ~= true then
+-- getgenv 
+getgenv().d = math.random
+if getgenv().d ~= math.random then
     Warn("❌ getgenv() is not supported!")
     issupported = false
 else
     Print("✅ getgenv() is supported!")
 end
-getgenv().__TEST_GLOBAL = nil
+getgenv().d = nil
 
 -- require
 local p = game:GetService("Players").LocalPlayer.PlayerScripts:FindFirstChild("PlayerModule")
@@ -35,7 +35,7 @@ local s, r = p and p:IsA("ModuleScript") and pcall(require, p)
 Print(s and "✅ require is supported!" or "❌ require is not supported!")
 if not s then issupported = false end
 
--- getupvalue
+-- getupvalue (CREDIT: UNC TEST)
 local upvalue = function() end
 local function test()
     print(upvalue)
@@ -47,7 +47,7 @@ else
     Print("✅ debug.getupvalue() is supported!")
 end
 
--- writefile
+-- writefile (CREDIT: UNC TEST)
 local success = pcall(function()
     writefile("test_writefile.txt", "success")
 end)
@@ -59,7 +59,7 @@ else
     Print("✅ writefile() is supported!")
 end
 
--- readfile
+-- readfile (CREDIT: UNC TEST)
 local success2, content = pcall(readfile, "test_writefile.txt")
 
 if not success2 or content ~= "success" then
