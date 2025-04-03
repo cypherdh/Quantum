@@ -99,6 +99,9 @@ end
 
 dummyinstance:Destroy();dummyinstance = nil
 
+-- setclipboard
+if not setclipboard then Warn("❌ setclipboard() is not supported!") issupported = false else Print("✅ setclipboard() is supported!") end
+
 -- Final Result
 if issupported then
     Print("-----------------------")
