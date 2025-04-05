@@ -111,6 +111,29 @@ dummyinstance:Destroy();dummyinstance = nil
 -- setclipboard
 if not setclipboard then Warn("❌ setclipboard not supported!") issupported = false else Print("✅ setclipboard supported!") end
 
+-- hookmetamethod (CREDIT: UNC TEST)
+local success, err = pcall(function()
+	local object = setmetatable({}, {
+		__index = newcclosure(function() return false end),
+		__metatable = "Locked!"
+	})
+
+	local original = hookmetamethod(object, "__index", function()
+		return true
+	end)
+
+	assert(object.test == true, "hookmetamethod didn't override __index properly")
+	assert(original() == false, "Returned original function doesn't behave correctly")
+end)
+
+if success then
+	Print("✅ hookmetamethod supported!")
+else
+	Warn("❌ hookmetamethod not supported!")
+	issupported = false
+end
+
+
 -- Final Result
 if issupported then
     Print("-----------------------")
